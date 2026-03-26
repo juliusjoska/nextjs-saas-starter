@@ -1,96 +1,121 @@
 # Next.js SaaS Starter
 
-Sablona pro SaaS projekty postavena na Next.js 16, Tailwind CSS 4 a TypeScript. Vcetne dark mode, responsivniho layoutu, Docker supportu a zakladni struktury pro dashboard.
+[![Next.js](https://img.shields.io/badge/Next.js-16-000000?logo=next.js&logoColor=white)](https://nextjs.org/)
+[![Supabase](https://img.shields.io/badge/Supabase-Ready-3FCF8E?logo=supabase&logoColor=white)](https://supabase.com/)
+[![Stripe](https://img.shields.io/badge/Stripe-Ready-635BFF?logo=stripe&logoColor=white)](https://stripe.com/)
+[![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-Components-000000?logo=shadcnui&logoColor=white)](https://ui.shadcn.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-**A template for SaaS projects built with Next.js 16, Tailwind CSS 4, and TypeScript. Includes dark mode, responsive layout, Docker support, and basic dashboard structure.**
+An opinionated, production-ready starter template for building SaaS applications. Built with Next.js 16 App Router, Supabase for auth and database, Stripe for payments, and shadcn/ui for the component layer.
 
 ---
 
-## Funkce / Features
+## Features
 
-- **Next.js 16** s App Router a Server Components
-- **Tailwind CSS 4** s dark mode (class strategy)
-- **TypeScript** strict mode
-- **Responsivni layout** — sidebar + top nav pro dashboard
-- **Landing page** — hero, features, pricing, CTA
-- **Auth stranky** — login, register (placeholder)
-- **Docker-ready** — multi-stage Dockerfile + docker-compose.yml
-- **SEO** — metadata, Open Graph, sitemap
-- **ESLint + Prettier** konfigurace
+- **Authentication** -- Supabase Auth with email/password and OAuth providers
+- **Payments** -- Stripe integration with subscriptions and billing portal
+- **Multi-tenant** -- Workspace/organization architecture out of the box
+- **Row-Level Security** -- Supabase RLS policies for data isolation
+- **Dashboard UI** -- Sidebar navigation, top bar, responsive layout
+- **Dark mode** -- System-aware with manual toggle (class strategy)
+- **Responsive** -- Mobile-first design across all pages
+- **SEO ready** -- Metadata, Open Graph, sitemap generation
+- **Docker ready** -- Multi-stage Dockerfile and docker-compose.yml included
 
-## Struktura / Structure
+## Quick Start
+
+```bash
+# Clone the repository
+git clone https://github.com/juliusjoska/nextjs-saas-starter.git
+cd nextjs-saas-starter
+
+# Install dependencies
+npm install
+
+# Set up environment variables
+cp .env.example .env.local
+# Edit .env.local with your Supabase and Stripe keys
+
+# Start the development server
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) to see the app.
+
+## Environment Variables
+
+```bash
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+
+# Stripe
+STRIPE_SECRET_KEY=sk_test_...
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+
+# App
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
+
+## Tech Stack
+
+| Technology | Version | Purpose |
+|------------|---------|---------|
+| Next.js | 16 | React framework (App Router, Server Components) |
+| TypeScript | 5 | Type safety |
+| Tailwind CSS | 4 | Utility-first styling |
+| shadcn/ui | latest | Accessible component library |
+| Supabase | -- | Auth, PostgreSQL database, storage |
+| Stripe | -- | Payments and subscriptions |
+| Docker | -- | Containerized deployment |
+
+## Project Structure
 
 ```
 src/
   app/
-    (landing)/        # Verejna landing page
-      page.tsx        # Hero, features, pricing
-    dashboard/        # Chraneny dashboard
-      page.tsx        # Dashboard overview
-      layout.tsx      # Sidebar + topbar layout
-    auth/
-      login/page.tsx  # Prihlaseni
-      register/page.tsx # Registrace
-    layout.tsx        # Root layout (dark mode, fonty)
-    globals.css       # Tailwind direktivy + custom styly
+    (landing)/            # Public marketing pages
+      page.tsx            # Hero, features, pricing
+    (auth)/
+      login/page.tsx      # Sign in
+      register/page.tsx   # Sign up
+    dashboard/            # Protected dashboard area
+      page.tsx            # Dashboard overview
+      layout.tsx          # Sidebar + topbar layout
+      settings/           # Account and billing settings
+    api/
+      webhooks/stripe/    # Stripe webhook handler
+    layout.tsx            # Root layout
+    globals.css           # Tailwind directives + theme
   components/
-    ui/               # Zakladni UI komponenty (Button, Card, Input)
-    layout/           # Layout komponenty (Sidebar, Topbar)
+    ui/                   # Base UI components (Button, Card, Input, ...)
+    layout/               # Layout components (Sidebar, Topbar)
   lib/
-    utils.ts          # Helper funkce (cn, formatDate)
+    supabase/             # Supabase client helpers
+    stripe/               # Stripe helpers
+    utils.ts              # Utility functions
 ```
-
-## Spusteni / Getting Started
-
-```bash
-# Instalace zavislosti
-npm install
-
-# Dev server
-npm run dev
-
-# Build
-npm run build
-
-# Docker
-docker compose up -d
-```
-
-Aplikace bezi na [http://localhost:3000](http://localhost:3000).
 
 ## Docker
 
 ```bash
-# Build a spusteni
+# Build and run
 docker compose up -d --build
 
-# Jen build image
+# Or build the image directly
 docker build -t my-saas-app .
 ```
 
-Dockerfile pouziva multi-stage build pro minimalni velikost obrazu.
+The Dockerfile uses a multi-stage build for minimal image size.
 
-## Prizpusobeni / Customization
+## License
 
-1. **Barvy** — uprav `src/app/globals.css` (CSS promenne)
-2. **Metadata** — uprav `src/app/layout.tsx`
-3. **Landing page** — uprav `src/app/(landing)/page.tsx`
-4. **Dashboard** — pridej stranky do `src/app/dashboard/`
-5. **Auth** — napoj na Supabase, NextAuth, nebo vlastni reseni
-
-## Tech Stack
-
-| Technologie | Verze | Popis |
-|-------------|-------|-------|
-| Next.js | 16 | React framework |
-| TypeScript | 5 | Typovy system |
-| Tailwind CSS | 4 | Utility-first CSS |
-| Docker | - | Kontejnerizace |
-
-## Licence
-
-MIT
+[MIT](LICENSE)
 
 ---
 
-Vytvoreno s [ajtak.it](https://ajtak.it) | [juliusjoska.cz](https://juliusjoska.cz)
+Made by [Julius Joska](https://github.com/juliusjoska) | [ajtak.it](https://ajtak.it)
